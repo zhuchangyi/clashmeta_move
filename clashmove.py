@@ -1,6 +1,8 @@
 import os
 import requests
 import re
+import zipfile
+import shutil
 
 def find_clash_for_windows():
     # 获取系统盘符
@@ -24,7 +26,7 @@ else:
 
 parent_path = os.path.join(parent_path, "resources", "static", "files", "win", "x64")
 print(f"Clash for Windows 的配置文件路径是：{parent_path}")
-#os.startfile(parent_path)
+os.startfile(parent_path)
 url = "https://github.com/MetaCubeX/Clash.Meta/releases/latest"
 response = requests.get(url, allow_redirects=False)
 if response.status_code == 302:
@@ -40,9 +42,17 @@ if response.status_code == 302:
         file_path = os.path.join(parent_path, "clash-win64.exe")
         if os.path.exists(file_path):
             os.remove(file_path)
-        with open(file_path, "clash-win64.exe") as f:
+        with open(file_path, "clash-win64") as f:
             f.write(response.content)
         print("文件下载成功！")
+        with zipfile.ZipFile(file_path, "r") as zip_ref:
+            zip_ref.extractall(parent_path)
+        print("文件解压成功！")
+        pathmeta = os.path.join(parent_path, "clash.meta-windows-amd64-v" + version)
+        os.rename(pathmeta, os.path.join(parent_path, "clash-win64"))
+        shutil.move(pathmeta, parent_path)
+        print("内核更换成功！")
+
     else:
             print("文件下载失败！")
 else:
