@@ -2,7 +2,7 @@ import os
 import requests
 import re
 import zipfile
-import shutil
+import psutil
 
 def find_clash_for_windows():
     # 获取系统盘符
@@ -39,18 +39,25 @@ if response.status_code == 302:
     print(f"下载地址是：{asset_url}")
     response = requests.get(asset_url)
     if response.status_code == 200:
-        file_path = os.path.join(parent_path, "clash-win64.exe")
-        if os.path.exists(file_path):
-            os.remove(file_path)
-        with open(file_path, "clash-win64") as f:
+        if not os.path.exists(parent_path):
+            os.makedirs(parent_path)
+        with open(os.path.join(parent_path, 'clash.meta-windows-amd64-v'+version+'.zip'), "wb") as f:
             f.write(response.content)
-        print("文件下载成功！")
-        with zipfile.ZipFile(file_path, "r") as zip_ref:
+            print("文件下载成功！")
+        zip_file_path = os.path.join(parent_path, 'clash.meta-windows-amd64-v'+version+'.zip')
+        with zipfile.ZipFile(zip_file_path, "r") as zip_ref:
             zip_ref.extractall(parent_path)
         print("文件解压成功！")
-        pathmeta = os.path.join(parent_path, "clash.meta-windows-amd64-v" + version)
-        os.rename(pathmeta, os.path.join(parent_path, "clash-win64"))
-        shutil.move(pathmeta, parent_path)
+        for proc in psutil.process_iter(['pid', 'name']):
+            if proc.info['name'] == 'Clash for Windows.exe':
+                # 关闭进程
+                proc.kill()
+        file_path = os.path.join(parent_path, "clash-win64.exe")
+        if os.path.exists(file_path):
+            print("clash-win64.exe exists, removing...")
+            os.remove(file_path)
+        pathmeta = os.path.join(parent_path, "clash.meta-windows-amd64.exe")
+        os.rename(pathmeta, os.path.join(parent_path, "clash-win64.exe"))
         print("内核更换成功！")
 
     else:
