@@ -3,12 +3,11 @@ import requests
 import re
 import zipfile
 import psutil
-import psutil
-
 
 
 def find_clash_for_windows():
     process_name = "clash-win64.exe"
+    findpath = False
     for proc in psutil.process_iter(['name', 'exe']):
         if proc.info['name'] == process_name:
             process_path = proc.info['exe']
@@ -27,6 +26,10 @@ if parent_path is None:
     exit()
 
 os.startfile(parent_path)
+
+
+
+
 url = "https://github.com/MetaCubeX/Clash.Meta/releases/latest"
 response = requests.get(url, allow_redirects=False)
 if response.status_code == 302:
