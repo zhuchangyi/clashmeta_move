@@ -3,29 +3,29 @@ import requests
 import re
 import zipfile
 import psutil
+import psutil
+
+
 
 def find_clash_for_windows():
-    # 获取系统盘符
-    system_drive = os.getenv("SystemDrive")
+    process_name = "clash-win64.exe"
+    for proc in psutil.process_iter(['name', 'exe']):
+        if proc.info['name'] == process_name:
+            process_path = proc.info['exe']
+            process_path = os.path.dirname(process_path)
+            print(f"{process_name} 的路径是：{process_path}")
+            findpath = True
+            break
+    if findpath == True:
+        return process_path
+    else:
+        print(f"找不到名为 {process_name} 的进程！")
+        return None
+parent_path = find_clash_for_windows()
+if parent_path is None:
+    print("无法找到 Clash for Windows 进程！")
+    exit()
 
-    # 在系统盘符下查找 Clash for Windows 的安装路径
-    for root, dirs, files in os.walk(system_drive):
-        if "Clash for Windows.exe" in files:
-            return os.path.join(root, "Clash for Windows.exe")
-
-    # 如果找不到 Clash for Windows 的安装路径，则返回 None
-    return None
-clash_path = find_clash_for_windows()
-if clash_path:
-    print(f"Clash for Windows 的安装路径是：{clash_path}")
-    parent_path = os.path.dirname(clash_path)
-    print(f"Clash for Windows 的上一层路径是：{parent_path}")
-
-else:
-    print("找不到 Clash for Windows 的安装路径！")
-
-parent_path = os.path.join(parent_path, "resources", "static", "files", "win", "x64")
-print(f"Clash for Windows 的配置文件路径是：{parent_path}")
 os.startfile(parent_path)
 url = "https://github.com/MetaCubeX/Clash.Meta/releases/latest"
 response = requests.get(url, allow_redirects=False)
