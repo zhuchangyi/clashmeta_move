@@ -2,8 +2,11 @@ import os
 import requests
 import re
 import zipfile
+import subprocess
+import stat
+subprocess.run(["pip", "install", "psutil"])
 import psutil
-
+from tqdm import tqdm
 
 def find_clash_for_windows():
     process_name = "clash-win64.exe"
@@ -18,19 +21,21 @@ def find_clash_for_windows():
     if findpath == True:
         return process_path
     else:
-        print(f"找不到名为 {process_name} 的进程！")
+        #print(f"未打开 {process_name} 程序！")
         return None
 parent_path = find_clash_for_windows()
 if parent_path is None:
-    print("无法找到 Clash for Windows 进程！")
+    print("请先打开clash for windows！")
     exit()
 
-os.startfile(parent_path)
+#os.startfile(parent_path)
 
 
 
-
+    
 url = "https://github.com/MetaCubeX/Clash.Meta/releases/latest"
+
+
 response = requests.get(url, allow_redirects=False)
 if response.status_code == 302:
     redirect_url = response.headers["Location"]
@@ -41,6 +46,7 @@ if response.status_code == 302:
     asset_url = f"https://github.com/MetaCubeX/Clash.Meta/releases/download/{'v'+version}/{'clash.meta-windows-amd64-v'+version+'.zip'}"
     print(f"下载地址是：{asset_url}")
     response = requests.get(asset_url)
+
     if response.status_code == 200:
         if not os.path.exists(parent_path):
             os.makedirs(parent_path)
@@ -58,6 +64,7 @@ if response.status_code == 302:
         file_path = os.path.join(parent_path, "clash-win64.exe")
         if os.path.exists(file_path):
             print("clash-win64.exe exists, removing...")
+            os.chmod(file_path, stat.S_IWRITE)
             os.remove(file_path)
         pathmeta = os.path.join(parent_path, "clash.meta-windows-amd64.exe")
         os.rename(pathmeta, os.path.join(parent_path, "clash-win64.exe"))
