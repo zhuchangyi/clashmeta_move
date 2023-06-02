@@ -4,13 +4,7 @@
 这是一个一键更换 clash.meta最新版内核的Python 脚本，适用于更新clash适合更换meta内核或升级meta内核。
 
 ## 安装
-
-要使用此脚本，你需要先安装 Python 3 和 psutil 模块。你可以使用以下命令来安装 psutil 模块：
-
-```cmd 
-pip install psutil
-```
-```运行代码前请自行运行Clash for windows程序，并打开代理```
+```运行代码前请自行运行Clash for windows程序```
 ## 运行脚本  
 在终端输入
 ```cmd
