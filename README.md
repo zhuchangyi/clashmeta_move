@@ -1,7 +1,7 @@
 <<<<<<< HEAD
 # clash for windows一键更换最新clash.meta内核
 
-这是一个一键更换 clash.meta最新版内核的Python 脚本
+这是一个一键更换 clash.meta最新版内核的Python 脚本，适用于更新clash适合更换meta内核或升级meta内核。
 
 ## 安装
 
