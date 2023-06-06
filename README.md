@@ -5,9 +5,9 @@
 ## 安装
 ```运行代码前请自行运行Clash for windows程序```
 ## 运行脚本  
-在终端输入
-```cmd
-py clashmove.py  
+```
+打开clashmove.exe
+
 ```
 ## 显示内核更换成功即可  
 ```文件下载成功！
