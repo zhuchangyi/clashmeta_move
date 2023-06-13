@@ -6,7 +6,7 @@
 ```运行代码前请自行运行Clash for windows程序```
 ## 运行脚本  
 ```
-打开clashmove.exe
+打开clashmove.exe,不行就直接运行clashmove.py
 
 ```
 ## 显示内核更换成功即可  
